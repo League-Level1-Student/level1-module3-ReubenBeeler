@@ -3,7 +3,9 @@
  *    Level 1
  */
 
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -11,7 +13,10 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import javazoom.jl.player.advanced.AdvancedPlayer;
@@ -19,13 +24,41 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 /* 1. Download the JavaZoom jar from here: http://bit.ly/javazoom
  * 2. Right click your project and add it as an External JAR (Under Java Build Path > Libraries).*/
 
-public class Jukebox implements Runnable {
+public class Jukebox implements Runnable, ActionListener {
+
+	static JFrame frame = new JFrame();
+	static JPanel panel = new JPanel();
+
+	static Song CurrentSong;
+
+	static JButton button_Russian = new JButton();
+	static Song Russian = new Song("RussianAccent.mp3");
+
+	static JButton button_Elevator = new JButton();
+	static Song Elevator = new Song("elevator_music.wav");
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Jukebox());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-           public void run() {
+	public void prepFrame() {
+		frame.add(panel);
+		frame.setVisible(true);
+
+		panel.add(button_Russian);
+		button_Russian.setText("4chan reference in Russian Accent");
+		button_Russian.addActionListener(this);
+
+		panel.add(button_Elevator);
+		button_Elevator.setText("Elevator Music");
+		button_Elevator.addActionListener(this);
+
+		frame.pack();
+	}
+
+	public void run() {
+		prepFrame();
 
 		// 3. Find an mp3 on your computer or on the Internet.
 		// 4. Create a Song
@@ -33,18 +66,35 @@ public class Jukebox implements Runnable {
 		// 5. Play the Song
 
 		/*
-		 * 6. Create a user interface for your Jukebox so that the user can to
-		 * choose which song to play. You can use can use a different button for
-		 * each song, or a picture of the album cover. When the button or album
-		 * cover is clicked, stop the currently playing song, and play the one
-		 * that was selected.
+		 * 6. Create a user interface for your Jukebox so that the user can to choose
+		 * which song to play. You can use can use a different button for each song, or
+		 * a picture of the album cover. When the button or album cover is clicked, stop
+		 * the currently playing song, and play the one that was selected.
 		 */
-          }
+	}
+
 	/* Use this method to add album covers to your Panel. */
 	private JLabel loadImage(String fileName) {
 		URL imageURL = getClass().getResource(fileName);
 		Icon icon = new ImageIcon(imageURL);
 		return new JLabel(icon);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (CurrentSong != null) {
+			CurrentSong.stop();
+		}
+
+		JButton clicked = (JButton) e.getSource();
+		if (clicked == button_Russian) {
+			CurrentSong = Russian;
+		} else if (clicked == button_Elevator) {
+			CurrentSong = Elevator;
+		}
+
+		CurrentSong.play();
 	}
 
 }
@@ -57,8 +107,7 @@ class Song {
 	private InputStream songStream;
 
 	/**
-	 * Songs can be constructed from files on your computer or Internet
-	 * addresses.
+	 * Songs can be constructed from files on your computer or Internet addresses.
 	 * 
 	 * Examples: <code> 
 	 * 		new Song("everywhere.mp3"); 	//from default package 
@@ -133,4 +182,3 @@ class Song {
 		}
 	}
 }
-

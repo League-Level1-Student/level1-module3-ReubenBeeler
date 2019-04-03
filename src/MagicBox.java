@@ -18,6 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class MagicBox extends JPanel implements Runnable, MouseListener {
+	
+	static JFrame frame = new JFrame();
+	
+	public void prepFrame() {
+		frame.addMouseListener(this);
+	}
 
 	/*
 	 * We are going to hide secrets within the magic box. 
