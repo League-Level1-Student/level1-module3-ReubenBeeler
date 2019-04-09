@@ -4,6 +4,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/gridworld.jar"/>
 	<classpathentry kind="lib" path="src/javazoom.jar"/>
-	<classpathentry kind="lib" path="/Users/league/Downloads/javazoom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

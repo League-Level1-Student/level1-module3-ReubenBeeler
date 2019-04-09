@@ -28,6 +28,7 @@ public class Jukebox implements Runnable, ActionListener {
 
 	static JFrame frame = new JFrame();
 	static JPanel panel = new JPanel();
+	static JLabel label_PickSong = new JLabel();
 
 	static Song CurrentSong;
 
@@ -35,8 +36,15 @@ public class Jukebox implements Runnable, ActionListener {
 	static Song Russian = new Song("RussianAccent.mp3");
 
 	static JButton button_Elevator = new JButton();
-	static Song Elevator = new Song("elevator_music.wav");
+	static Song Elevator = new Song("elevator_music.mp3");
+	
+	static JButton button_Drums = new JButton();
+	static Song Drums = new Song("drums.mp3");
 
+	static JButton button_stop = new JButton();
+	
+	static JButton button_play = new JButton();
+	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Jukebox());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,6 +53,7 @@ public class Jukebox implements Runnable, ActionListener {
 	public void prepFrame() {
 		frame.add(panel);
 		frame.setVisible(true);
+		frame.setSize(500, 100);
 
 		panel.add(button_Russian);
 		button_Russian.setText("4chan reference in Russian Accent");
@@ -53,8 +62,20 @@ public class Jukebox implements Runnable, ActionListener {
 		panel.add(button_Elevator);
 		button_Elevator.setText("Elevator Music");
 		button_Elevator.addActionListener(this);
-
-		frame.pack();
+		
+		panel.add(button_Drums);
+		button_Drums.setText("Drums");
+		button_Drums.addActionListener(this);
+		
+		panel.add(button_stop);
+		button_stop.setText("||");
+		button_stop.addActionListener(this);
+		
+		panel.add(button_play);
+		button_play.setText("|>");
+		button_play.addActionListener(this);
+		
+		panel.add(label_PickSong);
 	}
 
 	public void run() {
@@ -83,20 +104,35 @@ public class Jukebox implements Runnable, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (CurrentSong != null) {
-			CurrentSong.stop();
-		}
 
 		JButton clicked = (JButton) e.getSource();
-		if (clicked == button_Russian) {
+		if ((clicked == button_stop || clicked == button_play) && CurrentSong == null) {
+			label_PickSong.setText("Pick A Song");
+		} else if (clicked == button_stop) {
+			CurrentSong.stop();
+		} else if (clicked == button_play) {
+			CurrentSong.play();
+		} else if (clicked == button_Russian) {
+			if (CurrentSong != null) {
+				CurrentSong.stop();
+			}
 			CurrentSong = Russian;
 		} else if (clicked == button_Elevator) {
+			if (CurrentSong != null) {
+				CurrentSong.stop();
+			}
 			CurrentSong = Elevator;
+		} else if (clicked == button_Drums) {
+			if (CurrentSong != null) {
+				CurrentSong.stop();
+			}
+			CurrentSong = Drums;
 		}
-
-		CurrentSong.play();
+		
+		if (CurrentSong != null) {
+			label_PickSong.setText("");
+		}
 	}
-
 }
 
 class Song {
