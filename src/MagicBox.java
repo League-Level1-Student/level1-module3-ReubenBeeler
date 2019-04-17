@@ -4,6 +4,7 @@
  */
 
 
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -14,16 +15,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class MagicBox extends JPanel implements Runnable, MouseListener {
 	
-	static JFrame frame = new JFrame();
-	
-	public void prepFrame() {
-		frame.addMouseListener(this);
-	}
+	int clickedX;
+	int clickedY;
 
 	/*
 	 * We are going to hide secrets within the magic box. 
@@ -62,6 +62,8 @@ public class MagicBox extends JPanel implements Runnable, MouseListener {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		
+		frame.addMouseListener(this);
 	}
 
 	private void loadBackgroundImage() throws Exception {
@@ -81,31 +83,41 @@ public class MagicBox extends JPanel implements Runnable, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		if (((e.getX() > 50) && (e.getX() < 100)) && ((e.getY() > 75) && (e.getY() < 122))) {
+			System.out.println("Circle marks the spot!");
+		} else if (((e.getX() > 340) && (e.getX() < 358)) && ((e.getY() > 615) && (e.getY() < 680))) {
+			System.out.println("DOOOOOR");
+		}
 		
+		System.out.println("(" + e.getX() + ", " + e.getY() + ")");
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("CLICK!");
+		clickedX = e.getX();
+		clickedY = e.getY();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		if ((e.getX() != clickedX) || (e.getY() != clickedY)) {
+			System.out.println("Hint: Dragging is not the answer");
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("We are now inside.");
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Thinking outside the box?");
 	}
 
 }
