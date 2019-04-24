@@ -111,7 +111,7 @@ public class MagicBox extends JPanel implements Runnable, MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("We are now inside.");
+		System.out.println("You are now inside.");
 	}
 
 	@Override
